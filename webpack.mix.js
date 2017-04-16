@@ -1,3 +1,4 @@
+//noinspection JSAnnotator
 const { mix } = require('laravel-mix');
 
 /*
@@ -11,5 +12,12 @@ const { mix } = require('laravel-mix');
  |
  */
 
-mix.js('resources/assets/js/app.js', 'public/js')
-   .sass('resources/assets/sass/app.scss', 'public/css');
+/*mix.js('resources/assets/js/app.js', 'public/js')
+   .sass('resources/assets/sass/app.scss', 'public/css'); */
+
+//mix.sass('resources/assets/sass/app.scss', 'public/css');
+
+//mix.styles('resources/assets/css/libs/sweetalert.css', 'public/css/sweetalert.css')
+ //   .scripts('resources/assets/js/libs/sweetalert-dev.js', 'public/js/sweetalert-dev.js');
+
+

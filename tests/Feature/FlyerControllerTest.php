@@ -7,16 +7,16 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class ExampleTest extends TestCase
+class FlyerControllerTest extends TestCase
 {
     /**
-     * A basic test example.
+     * check a flyer create form
      *
      * @return void
      */
-    public function testBasicTest()
+    public function test_it_shows_form_to_create_a_new_flyer()
     {
-        $response = $this->get('/');
+        $response = $this->get('flyers/create');
 
         $response->assertStatus(200);
     }
