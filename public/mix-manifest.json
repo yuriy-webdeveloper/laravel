@@ -1,5 +1,6 @@
 {
   "/mix.js": "/mix.js",
-  "/css/sweetalert.css": "/css/sweetalert.css",
-  "/js/sweetalert-dev.js": "/js/sweetalert-dev.js"
+  "/css/app.css": "/css/app.css",
+  "/css/lity.min.css": "/css/lity.min.css",
+  "/js/lity.js": "/js/lity.js"
 }

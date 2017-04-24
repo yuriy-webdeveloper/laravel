@@ -11,9 +11,20 @@
 |
 */
 
-Route::get('/', function () {
-    return view('home');
-});
+Route::get('/', 'HomeController@index');
+Route::get('/home', 'HomeController@index');
+
 
 Route::resource('flyers', 'FlyersController');
 Route::get('{zip}/{street}', 'FlyersController@show');
+Route::post('{zip}/{street}/photos', ['as' => 'store_photo', 'uses' => 'FlyersController@addPhoto']);
+
+Auth::routes();
+
+Route::delete('photos/{id}', 'FlyersController@deletePhoto');
+
+
+
+
+
+

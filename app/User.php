@@ -26,4 +26,39 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+
+    /**
+     * Define the relation, a user can have many flyers
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function flyer()
+    {
+        return $this->hasMany('App\Flyer');
+    }
+
+
+    /**
+     * Check if the given user equals to the authenticated user
+     *
+     * @param $relations
+     * @return bool
+     */
+    public function owns($relations)
+    {
+        return $relations->user_id == $this->id;
+    }
+
+
+    /**
+     * Save the given flyer
+     *
+     * @param Flyer $flyer
+     * @return false|\Illuminate\Database\Eloquent\Model
+     */
+    public function publish(Flyer $flyer)
+    {
+        return $this->flyer()->save($flyer);
+    }
 }

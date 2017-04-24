@@ -2,14 +2,27 @@
 
 namespace App\Http\Controllers;
 
-use App\Flyer;
-use Illuminate\Http\Request;
 use App;
-
+use App\Flyer;
+use App\Http\Requests\ChangeFlyerRequest;
+use App\Photo;
+use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 use App\Http\Requests\FlyerRequest;
+use App\Http\Controllers\Traits\AuthorizesUser;
+use Illuminate\Support\Facades\Auth;
 
 class FlyersController extends Controller
 {
+
+    //use AuthorizesUser;
+
+    public function __construct()
+    {
+        $this->middleware('auth', ['except' => ['show']]);
+        parent::__construct();
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -33,21 +46,24 @@ class FlyersController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(FlyerRequest $request)
     {
-        Flyer::create($request->all());
-        flash('Message')->important();
+        $flyer = $this->user->publish(
+            new Flyer($request->all())
+        );
 
-        return redirect()->back();
+        flash('Created')->important();
+
+        return redirect($flyer->path());
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show($zip, $street)
@@ -60,7 +76,7 @@ class FlyersController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -71,8 +87,8 @@ class FlyersController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -83,11 +99,66 @@ class FlyersController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
         //
     }
+
+
+    /**
+     * Add photos to a flyer
+     *
+     * @param $zip
+     * @param $street
+     * @param ChangeFlyerRequest|Request $request
+     * @return string
+     */
+    public function addPhoto($zip, $street, ChangeFlyerRequest $request)
+    {
+//        $this->validate($request, [
+//            'photo' => 'required|mimes:jpg,jpeg,png,bmp'
+//        ]);
+//
+//        if (!$this->userCreatedFlyer($request)) {
+//            return $this->unauthorized($request);
+//        }
+
+        $photo = $this->makePhoto($request->file('photo'));
+
+        Flyer::locatedAt($zip, $street)->addPhoto($photo);
+
+        return 'Ok';
+    }
+
+
+    /**
+     * @param UploadedFile $file
+     * @return mixed
+     */
+    public function makePhoto(UploadedFile $file)
+    {
+        return Photo::named($file->getClientOriginalName())
+            ->move($file);
+    }
+
+
+    /**
+     * Delete a photo by id
+     *
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function deletePhoto($id)
+    {
+        Photo::findOrFail($id)->delete();
+
+        return back();
+    }
+
+
 }
+
+

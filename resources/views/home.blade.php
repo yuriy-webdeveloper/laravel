@@ -1,9 +1,17 @@
-@extends('layout')
+@extends('layouts.app')
 
 @section('content')
-    <div class="jumbotron">
-        <h1>Project Flyer</h1></h1>
-        <p>This is a template showcasing the optional theme stylesheet included in Bootstrap. Use it as a starting point to create something more unique by building on or modifying it.</p>
-        <a href="/flyers/create" class="btn btn-primary">Create a flyer</a>
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="panel panel-default">
+                <div class="panel-heading">Dashboard</div>
+
+                <div class="panel-body">
+                    You are logged in!
+                </div>
+            </div>
+        </div>
     </div>
-@stop
+</div>
+@endsection
