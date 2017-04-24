@@ -3,10 +3,12 @@ namespace Deployer;
 require 'recipe/laravel.php';
 
 // Server
-server('ec2', 'ec2-54-193-39-243.us-west-1.compute.amazonaws.com')
+server('ec2', 'ec2-54-183-183-216.us-west-1.compute.amazonaws.com')
     ->user('ec2-user')
     ->pemFile('AWSInstance.pem')
     ->set('deploy_path', '/var/www/html');
+
+
 
 
 
@@ -21,7 +23,7 @@ task('deploy:upload', function() {
         'routes',
         'storage',
         'tests',
-        'vendor',
+        //'vendor',
         '.env',
         'composer.json',
         'composer.lock',
@@ -40,8 +42,8 @@ task('deploy:upload', function() {
 task('deploy', [
     'deploy:prepare',
     'deploy:lock',
-    'deploy:release',
-    'deploy:upload',
+    //'deploy:release',
+    //'deploy:upload',
     //'deploy:update_code',
     //'deploy:shared',
     //'deploy:vendors',
@@ -50,7 +52,7 @@ task('deploy', [
     'artisan:cache:clear',
     'artisan:config:cache',
     'artisan:optimize',
-    'deploy:symlink',
+    //'deploy:symlink',
     'deploy:unlock',
     'cleanup',
 ]);
